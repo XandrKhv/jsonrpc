@@ -32,6 +32,10 @@ class TokenAuthMiddleware implements OnceExecutedMiddleware
         string $headerName = 'X-Access-Key',
         array $tokens = []
     ) {
+        if (empty($tokens)) {
+            return $next($requests);
+        }
+
         if (!$key = $httpRequest->header($headerName)) {
             throw new JsonRpcException(JsonRpcException::CODE_UNAUTHORIZED);
         }
