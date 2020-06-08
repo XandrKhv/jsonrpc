@@ -42,7 +42,7 @@ class JsonRpcServer
      * @return ResponseCollection
      */
     public function handle(
-        string $content,
+        \Illuminate\Http\Request $content,
         string $serverName = 'default',
         string $group = null,
         string $action = null
@@ -53,6 +53,7 @@ class JsonRpcServer
 
             $requests = $this->parser->parse($content);
 
+            $content = json_encode($content->all());
             $responses = $pipeline->send($requests)
                 ->through($this->config->onceExecutedMiddleware)
                 ->via('handle')
